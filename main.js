@@ -14,18 +14,8 @@ test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
 
-test.set("apple", "green-red");
-console.log(test.entries());
-// console.log(test.buckets);
-// console.log(test.get("apple"));
-// console.log(test.get("Brian"));
-// console.log(test.get("hat"));
+console.log(test);
 
-// console.log(test.buckets);
-// console.log(test.length());
-// console.log(test.values());
-// console.log(test.entries());
-test.set("avocado", "green-brown");
-test.set("peach", "yellowish");
-console.log(test.buckets);
-console.log(test.length());
+test.set("moon", "silver");
+
+console.log(test);
