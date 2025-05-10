@@ -6,10 +6,12 @@ export class HashMap {
     this.capacity = capacity;
     this.buckets = Array(this.capacity)
       .fill()
-      .map((e) => []);
+      .map(() => []);
   }
 
   //methods
+
+  // method to hash the key
   hash(key) {
     let hashCode = 0;
     const primeNumber = 31;
@@ -19,12 +21,17 @@ export class HashMap {
     return hashCode;
   }
 
+  // return an individual bucket based on the key
   getBucket(key) {
     const index = this.hash(key);
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
     const bucket = this.buckets[index];
     return bucket;
   }
 
+  // push key and value object into the correct bucket
   set(key, value) {
     const bucket = this.getBucket(key);
     for (const element of bucket) {
@@ -41,6 +48,7 @@ export class HashMap {
 
   // Remember to grow your buckets to double their capacity when your hash map reaches the load factor. The methods mentioned later in this assignment can help you handle the growth logic, so you may want to implement this feature near the end. However, we mention this with set() because it’s important to grow buckets exactly as they are being expanded.
 
+  // returns the value of the key
   get(key) {
     const bucket = this.getBucket(key);
     for (const element of bucket) {
@@ -52,6 +60,7 @@ export class HashMap {
     return null;
   }
 
+  // returns true if hashmap contains the key
   has(key) {
     const bucket = this.getBucket(key);
     for (const element of bucket) {
@@ -63,6 +72,7 @@ export class HashMap {
     return false;
   }
 
+  // removes array entry corresponding to key
   remove(key) {
     if (this.has(key)) {
       const bucket = this.getBucket(key);
@@ -76,6 +86,7 @@ export class HashMap {
     }
   }
 
+  // returns the number of stored keys in the hash map.
   length() {
     let count = 0;
     for (const element of this.buckets) {
@@ -85,15 +96,17 @@ export class HashMap {
         }
       }
     }
-    return count; // returns the number of stored keys in the hash map.
+    return count;
   }
 
+  // clears array and resets it to the default capacity of 16
   clear() {
-    this.buckets = Array(this.capacity)
+    this.buckets = Array(16)
       .fill()
-      .map((e) => []);
+      .map(() => []);
   }
 
+  // returns an array containing all the keys inside the hash map.
   keys() {
     let keysArr = [];
     for (const element of this.buckets) {
@@ -105,13 +118,33 @@ export class HashMap {
     }
     return keysArr;
   }
-  // returns an array containing all the keys inside the hash map.
 
-  values() {}
   // returns an array containing all the values.
+  values() {
+    let valuesArr = [];
+    for (const element of this.buckets) {
+      if (element) {
+        for (const e of element) {
+          valuesArr.push(e.value);
+        }
+      }
+    }
+    return valuesArr;
+  }
 
-  entries() {}
   // returns an array that contains each key, value pair. Example: [[firstKey, firstValue], [secondKey, secondValue]]
+  entries() {
+    let entriesArr = [];
+    for (const element of this.buckets) {
+      if (element) {
+        for (const e of element) {
+          const arr = [e.key, e.value];
+          entriesArr.push(arr);
+        }
+      }
+    }
+    return entriesArr;
+  }
 }
 
 // use whenever we try to access a bucket as a failsafe
