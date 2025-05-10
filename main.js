@@ -21,4 +21,4 @@ console.log(test.get("Brian"));
 console.log(test.get("hat"));
 
 console.log(test.buckets);
-// console.log(test.buckets[1][0].key); // for k of buckets if k === key, change value
+console.log(test.length());

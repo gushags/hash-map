@@ -76,11 +76,23 @@ export class HashMap {
     }
   }
 
-  length() {}
-  // returns the number of stored keys in the hash map.
+  length() {
+    let count = 0;
+    for (const element of this.buckets) {
+      if (element) {
+        for (const e of element) {
+          count += 1;
+        }
+      }
+    }
+    return count; // returns the number of stored keys in the hash map.
+  }
 
-  clear() {}
-  // removes all entries in the hash map.
+  clear() {
+    this.buckets = Array(this.capacity)
+      .fill()
+      .map((e) => []);
+  }
 
   keys() {}
   // returns an array containing all the keys inside the hash map.
