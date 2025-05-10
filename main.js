@@ -22,3 +22,4 @@ console.log(test.get("hat"));
 
 console.log(test.buckets);
 console.log(test.length());
+console.log(test.keys());

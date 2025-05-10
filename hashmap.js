@@ -94,7 +94,17 @@ export class HashMap {
       .map((e) => []);
   }
 
-  keys() {}
+  keys() {
+    let keysArr = [];
+    for (const element of this.buckets) {
+      if (element) {
+        for (const e of element) {
+          keysArr.push(e.key);
+        }
+      }
+    }
+    return keysArr;
+  }
   // returns an array containing all the keys inside the hash map.
 
   values() {}
