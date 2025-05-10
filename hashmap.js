@@ -8,18 +8,30 @@ export class HashMap {
       .fill()
       .map((e) => []);
   }
+
   //methods
   hash(key) {
     let hashCode = 0;
-
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
-      hashCode = primeNumber * hashCode + key.charCodeAt(i);
+      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
     }
-
     return hashCode;
   }
-  set(key, value) {}
+
+  set(key, value) {
+    let index = this.hash(key);
+    let bucket = this.buckets[index];
+    for (let element of bucket) {
+      if (element.key === key) {
+        element.value = value;
+      } else {
+        bucket.push({ key, value });
+      }
+      return;
+    }
+    bucket.push({ key, value });
+  }
   // takes two arguments: the first is a key, and the second is a value that is assigned to this key. If a key already exists, then the old value is overwritten, and we can say that we update the key’s value (e.g. Carlos is our key but it is called twice: once with value I am the old value., and once with value I am the new value.. Following this logic, Carlos should contain only the latter value).
 
   // Recall that collisions occur when TWO DIFFERENT keys generate the same hash code and get assigned to the same bucket. (e.g. Rama and Sita are both hashed to 3, so 3 becomes a location for Rama AND Sita. However, we know that this is not an update because the keys are different). Review the dealing with collisions section of the previous lesson to find a way to handle our collisions.
