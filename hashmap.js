@@ -40,10 +40,18 @@ export class HashMap {
         element.value = value;
       } else {
         bucket.push({ key, value }); // otherwise add to array
+        if (this.length() > this.capacity * this.load) {
+          this.expandHashMap();
+        }
       }
       return;
     }
     bucket.push({ key, value });
+
+    // if load is exceeded, create a new hashmap with double the capacity
+    if (this.length() > this.capacity * this.load) {
+      this.expandHashMap();
+    }
   }
 
   // Remember to grow your buckets to double their capacity when your hash map reaches the load factor. The methods mentioned later in this assignment can help you handle the growth logic, so you may want to implement this feature near the end. However, we mention this with set() because it’s important to grow buckets exactly as they are being expanded.
@@ -100,8 +108,8 @@ export class HashMap {
   }
 
   // clears array and resets it to the default capacity of 16
-  clear() {
-    this.buckets = Array(16)
+  clear(cap = 16) {
+    this.buckets = Array(cap)
       .fill()
       .map(() => []);
   }
@@ -145,18 +153,15 @@ export class HashMap {
     }
     return entriesArr;
   }
+
+  // double the size of the hashmap if we exceed the load and
+  // re-set all keys and values into new hashmap
+  expandHashMap() {
+    this.capacity = this.capacity * 2;
+    const entriesArr = this.entries();
+    this.clear(this.capacity);
+    for (let i = 0; i < entriesArr.length; i++) {
+      this.set(entriesArr[i][0], entriesArr[i][1]);
+    }
+  }
 }
-
-// use whenever we try to access a bucket as a failsafe
-// if (index < 0 || index >= buckets.length) {
-//   throw new Error("Trying to access index out of bounds");
-// }
-
-// Remember we don’t want collisions. In a perfect world, each bucket will either have 0 or 1 node only, so we grow our buckets array to have more chance that our nodes will spread and not stack up in the same buckets. To grow our array, we create a new one that is double its size and then copy all existing nodes over to the buckets of this new array, hashing their keys again.
-
-// When do we know that it’s time to grow our buckets array?
-// To deal with this, our hash map class needs to keep track of two new fields, the capacity and the load factor.
-
-// The capacity is the total number of buckets we currently have.
-
-// The load factor is a number that we assign our hash map to at the start. It’s the factor that will determine when it is a good time to grow our buckets array. Hash map implementations across various languages use a load factor between 0.75 and 1.
